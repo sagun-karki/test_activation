@@ -2,7 +2,7 @@ name: Run on March 28 at 8:06 AM CST
 
 on:
   schedule:
-    - cron: '6 13 28 3 *'  # 8:06 AM CST = 13:06 UTC on March 28
+    - cron: '10 13 28 3 *'  # 8:06 AM CST = 13:06 UTC on March 28
 
 jobs:
   run-hello:
