@@ -40,13 +40,13 @@ jobs:
       #     Rscript -e 'cat(Sys.getenv("GCS_AUTH_FILE"), "\n")'
       #   shell: pwsh
 
-      - name: Install R packages
+      - name: Install R dependencies
         run: |
-          Rscript -e 'install.packages(c(
-            "shiny", "bslib", "plotly", "dplyr", "htmltools",
-            "shinyWidgets", "DT", "tippy", "shinycssloaders",
-            "glue", "leaflet", "testthat", "bigrquery"
-          ))'
+          Rscript -e 'install.packages("remotes")'
+          Rscript -e 'remotes::install_cran(c("shiny", "bslib", "plotly", "dplyr", "htmltools"), dependencies = TRUE)'
+          Rscript -e 'remotes::install_cran(c("shinyWidgets", "DT", "tippy", "shinycssloaders"), dependencies = TRUE)'
+          Rscript -e 'remotes::install_cran(c("glue", "leaflet", "testthat"), dependencies = TRUE)'
+          Rscript -e 'remotes::install_cran("bigrquery", dependencies = TRUE)'
         shell: pwsh
 
 
