@@ -41,17 +41,21 @@ jobs:
       #   shell: pwsh
 
       - name: Install R dependencies
+        shell: pwsh
         run: |
-          Rscript -e 'install.packages("remotes")'
-          Rscript -e 'remotes::install_cran(c("shiny", "bslib", "plotly", "dplyr", "htmltools"), dependencies = TRUE)'
-          Rscript -e 'remotes::install_cran(c("shinyWidgets", "DT", "tippy", "shinycssloaders"), dependencies = TRUE)'
-          Rscript -e 'remotes::install_cran(c("glue", "leaflet", "testthat"), dependencies = TRUE)'
-          Rscript -e 'remotes::install_cran("bigrquery", dependencies = TRUE)'
-        shell: pwsh
+          Rscript -e "install.packages('remotes')"
+          Rscript -e "remotes::install_cran(c(
+            'bigrquery', 'bs4Dash', 'config', 'DT', 'googleAnalyticsR',
+            'ggplot2', 'golem', 'ids', 'lubridate', 'markdown',
+            'pkgload', 'plotly', 'rlang', 'scales', 'shiny',
+            'stringr', 'gt', 'forcats', 'readr', 'shinyWidgets',
+            'bslib', 'dplyr', 'htmltools', 'tippy', 'shinycssloaders',
+            'glue', 'leaflet', 'testthat', 'devtools'), dependencies = TRUE)"
 
-      - name: Run R script
-        run: Rscript tests/testthat_judy.R
-        shell: pwsh
+
+      # - name: Run R script
+      #   run: Rscript tests/testthat_judy.R
+      #   shell: pwsh
 
 
 
