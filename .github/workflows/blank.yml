@@ -1,12 +1,40 @@
-name: Run on March 28 at 8:06 AM CST
-
+name: BQ Test
 on:
-  schedule:
-    - cron: '10 13 28 3 *'  # 8:06 AM CST = 13:06 UTC on March 28
-
+  push:
+    branches:
+      - main
 jobs:
-  run-hello:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Echo hello
-        run: echo "hello"
+  print_secret:
+    runs-on: windows-latest
+    steps: 
+      - name: Checkout current branch
+        uses: actions/checkout@v4
+
+      - name: Print working directory
+        run: Get-Location
+        shell: pwsh
+
+
+      # - name: Setup R
+      #   uses: r-lib/actions/setup-r@v2
+        
+      # - name: Write GCP_AUTH_FILE secret to JSON
+      #   run: |
+      #     $auth_json = '${{ secrets.GCS_AUTH_FILE }}'
+      #     $auth_json | Out-File -FilePath GCP_AUTH_FILE.json -Encoding utf8
+      #   shell: powershell
+      
+      # - name: Create .Renviron in current directory
+      #   run: |
+      #     echo "GCS_AUTH_FILE=$($PWD.Path -replace '\\', '/')/GCP_AUTH_FILE.json" > .Renviron
+      #     cat .Renviron  # Check the content of .Renviron
+      #   shell: powershell
+      
+        
+      
+      # - name: Check R environment
+      #   run: |
+      #     Rscript -e "cat('Working directory:', getwd(), '\n')"
+      #     Rscript -e "cat('R_HOME:', Sys.getenv('R_HOME'), '\n')"
+      #     Rscript -e "cat('GCS_AUTH_FILE:', Sys.getenv('GCS_AUTH_FILE'), '\n')"
+      #     Rscript -e "cat('File exists:', file.exists(Sys.getenv('GCS_AUTH_FILE')), '\n')"
