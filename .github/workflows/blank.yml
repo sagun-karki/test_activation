@@ -14,6 +14,19 @@ jobs:
         run: Get-Location
         shell: pwsh
 
+      - name: Set GCS auth and configure .Renviron
+        run: |
+          $jsonPath = "${{ runner.temp }}\gcs-auth.json"
+          $renvironPath = "${{ github.workspace }}\.Renviron"
+          Set-Content -Path $jsonPath -Value '${{ secrets.GCS_AUTH_FILE }}'
+          Add-Content -Path $renvironPath -Value "GCS_AUTH_FILE=$jsonPath"
+        shell: pwsh
+      - name: Show .Renviron content
+        run: Get-Content "${{ github.workspace }}\.Renviron"
+        shell: pwsh
+
+
+
 
       # - name: Setup R
       #   uses: r-lib/actions/setup-r@v2
