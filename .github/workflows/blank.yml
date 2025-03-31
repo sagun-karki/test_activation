@@ -41,6 +41,29 @@ jobs:
       - name: Set R_ENVIRON_USER for R
         run: echo "R_ENVIRON_USER=${{ github.workspace }}\\.Renviron" >> $env:GITHUB_ENV
         shell: pwsh
+
+      - name: Debug GCS auth file
+        shell: pwsh
+        run: |
+          $expectedPath = "${{ runner.temp }}\gcs-auth.json"
+          Write-Output "Expected path: $expectedPath"
+          Write-Output "File exists at expected path: $(Test-Path -Path $expectedPath)"
+          
+          # Check what R is actually reading
+          $rPath = (Rscript -e "cat(Sys.getenv('GCS_AUTH_FILE'))" | Out-String).Trim()
+          Write-Output "Path from R environment: '$rPath'"
+          
+          # List files in temp directory
+          Write-Output "Files in runner.temp directory:"
+          Get-ChildItem "${{ runner.temp }}"
+          
+          # Fix path if needed
+          if (-not (Test-Path -Path $rPath)) {
+            Write-Output "Attempting to construct correct path..."
+            $correctedPath = $rPath -replace 'D:a_temp', 'D:\a\_temp'
+            Write-Output "Corrected path: $correctedPath"
+            Write-Output "Corrected path exists: $(Test-Path -Path $correctedPath)"
+          }
         
       - name: Print GCS_AUTH_FILE contents
         shell: pwsh
