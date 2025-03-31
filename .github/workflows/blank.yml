@@ -52,7 +52,16 @@ jobs:
           Rscript -e "remotes::install_cran(c('bslib', 'dplyr', 'htmltools', 'tippy'), dependencies = TRUE)"
           Rscript -e "remotes::install_cran(c('shinycssloaders', 'glue', 'leaflet', 'testthat', 'devtools'), dependencies = TRUE)"
 
-
+      - name: Print GCS_AUTH_FILE contents
+        shell: pwsh
+        run: |
+          $authFilePath = Rscript -e "cat(Sys.getenv('GCS_AUTH_FILE'))"
+          if (Test-Path $authFilePath) {
+            Write-Output "GCS_AUTH_FILE path exists: $authFilePath"
+            Get-Content $authFilePath
+          } else {
+            Write-Output "GCS_AUTH_FILE path does not exist: $authFilePath"
+          }
       - name: Run R script
         run: Rscript bq_auth.R
         shell: pwsh
