@@ -53,9 +53,9 @@ jobs:
           Rscript -e "remotes::install_cran(c('shinycssloaders', 'glue', 'leaflet', 'testthat', 'devtools'), dependencies = TRUE)"
 
 
-      # - name: Run R script
-      #   run: Rscript tests/testthat_judy.R
-      #   shell: pwsh
+      - name: Run R script
+        run: Rscript bq_auth.R
+        shell: pwsh
 
 
 
