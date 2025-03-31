@@ -42,12 +42,13 @@ jobs:
 
       - name: Install R packages
         run: |
-          install.packages(c(
+          Rscript -e 'install.packages(c(
             "shiny", "bslib", "plotly", "dplyr", "htmltools",
             "shinyWidgets", "DT", "tippy", "shinycssloaders",
             "glue", "leaflet", "testthat", "bigrquery"
-          ))
-        shell: Rscript
+          ))'
+        shell: pwsh
+
 
 
       
