@@ -43,7 +43,6 @@ jobs:
       - name: Install R dependencies
         shell: pwsh
         run: |
-          Rscript -e "install.packages('remotes')"
           Rscript -e "remotes::install_cran(c(
             'bigrquery', 'bs4Dash', 'config', 'DT', 'googleAnalyticsR',
             'ggplot2', 'golem', 'ids', 'lubridate', 'markdown',
