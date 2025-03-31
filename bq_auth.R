@@ -18,3 +18,5 @@ setup_bq_auth <- function() {
     )
   }
 }
+
+setup_bq_auth()
