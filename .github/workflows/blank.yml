@@ -36,6 +36,6 @@ jobs:
 
       - name: Check GCS_AUTH_FILE in R
         run: |
-          cat("GCS_AUTH_FILE:\n")
-          cat(Sys.getenv("GCS_AUTH_FILE"), "\n")
-        shell: Rscript
+          Rscript -e 'cat("GCS_AUTH_FILE:\n")'
+          Rscript -e 'cat(Sys.getenv("GCS_AUTH_FILE"), "\n")'
+        shell: pwsh
