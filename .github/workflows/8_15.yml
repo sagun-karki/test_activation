@@ -1,10 +1,8 @@
 name: Run at 8:15 AM CST on March 28
-
 on:
   schedule:
     - cron: '15 13 28 3 *'
   workflow_dispatch:
-
 jobs:
   install_packages:
     runs-on: windows-latest
@@ -13,5 +11,6 @@ jobs:
         uses: r-lib/actions/setup-r@v2
       
       - name: Install required R packages
+        shell: cmd
         run: |
-          R -e "install.packages(c('testthat', 'bigrquery', 'jsonlite', 'devtools'))"
+          Rscript -e "install.packages(c('testthat', 'bigrquery', 'jsonlite', 'devtools'))"
