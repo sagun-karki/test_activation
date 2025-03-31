@@ -25,13 +25,15 @@ jobs:
       #     Rscript -e "remotes::install_cran(c('gt', 'forcats', 'readr', 'shinyWidgets'), dependencies = TRUE)"
       #     Rscript -e "remotes::install_cran(c('bslib', 'dplyr', 'htmltools', 'tippy'), dependencies = TRUE)"
       #     Rscript -e "remotes::install_cran(c('shinycssloaders', 'glue', 'leaflet', 'testthat', 'devtools'), dependencies = TRUE)"
-
+      
       - name: Set GCS auth and configure .Renviron
         run: |
           $jsonPath = "${{ runner.temp }}\gcs-auth.json"
           $renvironPath = "${{ github.workspace }}\.Renviron"
           Set-Content -Path $jsonPath -Value '${{ secrets.GCS_AUTH_FILE }}'
-          Add-Content -Path $renvironPath -Value "GCS_AUTH_FILE=$jsonPath"
+          # Use forward slashes instead of backslashes for R
+          $jsonPathForR = $jsonPath.Replace("\", "/")
+          Add-Content -Path $renvironPath -Value "GCS_AUTH_FILE=$jsonPathForR"
         shell: pwsh
 
       - name: Show .Renviron content
