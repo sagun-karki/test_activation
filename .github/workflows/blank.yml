@@ -43,13 +43,14 @@ jobs:
       - name: Install R dependencies
         shell: pwsh
         run: |
-          Rscript -e "remotes::install_cran(c(
-            'bigrquery', 'bs4Dash', 'config', 'DT', 'googleAnalyticsR',
-            'ggplot2', 'golem', 'ids', 'lubridate', 'markdown',
-            'pkgload', 'plotly', 'rlang', 'scales', 'shiny',
-            'stringr', 'gt', 'forcats', 'readr', 'shinyWidgets',
-            'bslib', 'dplyr', 'htmltools', 'tippy', 'shinycssloaders',
-            'glue', 'leaflet', 'testthat', 'devtools'), dependencies = TRUE)"
+          Rscript -e "install.packages('remotes')"
+          Rscript -e "remotes::install_cran(c('bigrquery', 'bs4Dash', 'config', 'DT'), dependencies = TRUE)"
+          Rscript -e "remotes::install_cran(c('googleAnalyticsR', 'ggplot2', 'golem', 'ids'), dependencies = TRUE)"
+          Rscript -e "remotes::install_cran(c('lubridate', 'markdown', 'pkgload', 'plotly'), dependencies = TRUE)"
+          Rscript -e "remotes::install_cran(c('rlang', 'scales', 'shiny', 'stringr'), dependencies = TRUE)"
+          Rscript -e "remotes::install_cran(c('gt', 'forcats', 'readr', 'shinyWidgets'), dependencies = TRUE)"
+          Rscript -e "remotes::install_cran(c('bslib', 'dplyr', 'htmltools', 'tippy'), dependencies = TRUE)"
+          Rscript -e "remotes::install_cran(c('shinycssloaders', 'glue', 'leaflet', 'testthat', 'devtools'), dependencies = TRUE)"
 
 
       # - name: Run R script
