@@ -1,87 +1,87 @@
-name: BQ Test
-on:
-  push:
-    branches:
-      - main
-jobs:
-  print_secret:
-    runs-on: windows-latest
-    steps: 
-      - name: Checkout current branch
-        uses: actions/checkout@v4
+# name: BQ Test
+# on:
+#   push:
+#     branches:
+#       - main
+# jobs:
+#   print_secret:
+#     runs-on: windows-latest
+#     steps: 
+#       - name: Checkout current branch
+#         uses: actions/checkout@v4
         
-      - name: Setup R
-        uses: r-lib/actions/setup-r@v2
-        with:
-          use-public-rspm: true
+#       - name: Setup R
+#         uses: r-lib/actions/setup-r@v2
+#         with:
+#           use-public-rspm: true
         
           
-      - name: Install R dependencies
-        shell: pwsh
-        run: |
-          Rscript -e "install.packages('remotes')"
-          Rscript -e "remotes::install_cran(c('bigrquery', 'bs4Dash', 'config', 'DT'), dependencies = TRUE)"
-          Rscript -e "remotes::install_cran(c('googleAnalyticsR', 'ggplot2', 'golem', 'ids'), dependencies = TRUE)"
-          Rscript -e "remotes::install_cran(c('lubridate', 'markdown', 'pkgload', 'plotly'), dependencies = TRUE)"
-          Rscript -e "remotes::install_cran(c('rlang', 'scales', 'shiny', 'stringr'), dependencies = TRUE)"
-          Rscript -e "remotes::install_cran(c('gt', 'forcats', 'readr', 'shinyWidgets'), dependencies = TRUE)"
-          Rscript -e "remotes::install_cran(c('bslib', 'dplyr', 'htmltools', 'tippy'), dependencies = TRUE)"
-          Rscript -e "remotes::install_cran(c('shinycssloaders', 'glue', 'leaflet', 'testthat', 'devtools'), dependencies = TRUE)"
+#       - name: Install R dependencies
+#         shell: pwsh
+#         run: |
+#           Rscript -e "install.packages('remotes')"
+#           Rscript -e "remotes::install_cran(c('bigrquery', 'bs4Dash', 'config', 'DT'), dependencies = TRUE)"
+#           Rscript -e "remotes::install_cran(c('googleAnalyticsR', 'ggplot2', 'golem', 'ids'), dependencies = TRUE)"
+#           Rscript -e "remotes::install_cran(c('lubridate', 'markdown', 'pkgload', 'plotly'), dependencies = TRUE)"
+#           Rscript -e "remotes::install_cran(c('rlang', 'scales', 'shiny', 'stringr'), dependencies = TRUE)"
+#           Rscript -e "remotes::install_cran(c('gt', 'forcats', 'readr', 'shinyWidgets'), dependencies = TRUE)"
+#           Rscript -e "remotes::install_cran(c('bslib', 'dplyr', 'htmltools', 'tippy'), dependencies = TRUE)"
+#           Rscript -e "remotes::install_cran(c('shinycssloaders', 'glue', 'leaflet', 'testthat', 'devtools'), dependencies = TRUE)"
       
-      - name: Set GCS auth and configure .Renviron
-        run: |
-          $jsonPath = "${{ runner.temp }}\gcs-auth.json"
-          $renvironPath = "${{ github.workspace }}\.Renviron"
-          Set-Content -Path $jsonPath -Value '${{ secrets.GCS_AUTH_FILE }}'
-          # Use forward slashes instead of backslashes for R
-          $jsonPathForR = $jsonPath.Replace("\", "/")
-          Add-Content -Path $renvironPath -Value "GCS_AUTH_FILE=$jsonPathForR"
-        shell: pwsh
+#       - name: Set GCS auth and configure .Renviron
+#         run: |
+#           $jsonPath = "${{ runner.temp }}\gcs-auth.json"
+#           $renvironPath = "${{ github.workspace }}\.Renviron"
+#           Set-Content -Path $jsonPath -Value '${{ secrets.GCS_AUTH_FILE }}'
+#           # Use forward slashes instead of backslashes for R
+#           $jsonPathForR = $jsonPath.Replace("\", "/")
+#           Add-Content -Path $renvironPath -Value "GCS_AUTH_FILE=$jsonPathForR"
+#         shell: pwsh
         
-      - name: Show .Renviron content
-        run: Get-Content "${{ github.workspace }}\.Renviron"
-        shell: pwsh
+#       - name: Show .Renviron content
+#         run: Get-Content "${{ github.workspace }}\.Renviron"
+#         shell: pwsh
         
-      - name: Set R_ENVIRON_USER for R
-        run: echo "R_ENVIRON_USER=${{ github.workspace }}\\.Renviron" >> $env:GITHUB_ENV
-        shell: pwsh
+#       - name: Set R_ENVIRON_USER for R
+#         run: echo "R_ENVIRON_USER=${{ github.workspace }}\\.Renviron" >> $env:GITHUB_ENV
+#         shell: pwsh
         
-      - name: Debug GCS auth file
-        shell: pwsh
-        run: |
-          $expectedPath = "${{ runner.temp }}\gcs-auth.json"
-          Write-Output "Expected path: $expectedPath"
-          Write-Output "File exists at expected path: $(Test-Path -Path $expectedPath)"
+#       - name: Debug GCS auth file
+#         shell: pwsh
+#         run: |
+#           $expectedPath = "${{ runner.temp }}\gcs-auth.json"
+#           Write-Output "Expected path: $expectedPath"
+#           Write-Output "File exists at expected path: $(Test-Path -Path $expectedPath)"
           
-          # Check what R is actually reading
-          $rPath = (Rscript -e "cat(Sys.getenv('GCS_AUTH_FILE'))" | Out-String).Trim()
-          Write-Output "Path from R environment: '$rPath'"
+#           # Check what R is actually reading
+#           $rPath = (Rscript -e "cat(Sys.getenv('GCS_AUTH_FILE'))" | Out-String).Trim()
+#           Write-Output "Path from R environment: '$rPath'"
           
-          # List files in temp directory
-          Write-Output "Files in runner.temp directory:"
-          Get-ChildItem "${{ runner.temp }}"
+#           # List files in temp directory
+#           Write-Output "Files in runner.temp directory:"
+#           Get-ChildItem "${{ runner.temp }}"
           
-          # Fix path if needed
-          if (-not (Test-Path -Path $rPath)) {
-            Write-Output "Attempting to construct correct path..."
-            $correctedPath = $rPath -replace 'D:a_temp', 'D:\a\_temp'
-            Write-Output "Corrected path: $correctedPath"
-            Write-Output "Corrected path exists: $(Test-Path -Path $correctedPath)"
-          }
+#           # Fix path if needed
+#           if (-not (Test-Path -Path $rPath)) {
+#             Write-Output "Attempting to construct correct path..."
+#             $correctedPath = $rPath -replace 'D:a_temp', 'D:\a\_temp'
+#             Write-Output "Corrected path: $correctedPath"
+#             Write-Output "Corrected path exists: $(Test-Path -Path $correctedPath)"
+#           }
         
-      - name: Print GCS_AUTH_FILE contents
-        shell: pwsh
-        run: |
-          $authFilePath = Rscript -e "cat(Sys.getenv('GCS_AUTH_FILE'))"
-          if (Test-Path $authFilePath) {
-            Write-Output "GCS_AUTH_FILE path exists: $authFilePath"
-            Get-Content $authFilePath
-          } else {
-            Write-Output "GCS_AUTH_FILE path does not exist: $authFilePath"
-          }
-      - name: Cache
-        uses: actions/cache@v4.2.3
+#       - name: Print GCS_AUTH_FILE contents
+#         shell: pwsh
+#         run: |
+#           $authFilePath = Rscript -e "cat(Sys.getenv('GCS_AUTH_FILE'))"
+#           if (Test-Path $authFilePath) {
+#             Write-Output "GCS_AUTH_FILE path exists: $authFilePath"
+#             Get-Content $authFilePath
+#           } else {
+#             Write-Output "GCS_AUTH_FILE path does not exist: $authFilePath"
+#           }
+#       - name: Cache
+#         uses: actions/cache@v4.2.3
           
-      - name: Run R script
-        run: Rscript bq_auth.R
-        shell: pwsh
+#       - name: Run R script
+#         run: Rscript bq_auth.R
+#         shell: pwsh
