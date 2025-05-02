@@ -1,12 +1,12 @@
-name: Run at 8:15 AM CST on March 28
-on:
-  schedule:
-    - cron: '15 13 28 3 *'
-  workflow_dispatch:
-jobs:
-  install_packages:
-    runs-on: windows-latest
-    steps:
-      - name: Show R lib path
-        run: Rscript -e "print(.libPaths())"
-        shell: pwsh
+# name: Run at 8:15 AM CST on March 28
+# on:
+#   schedule:
+#     - cron: '15 13 28 3 *'
+#   workflow_dispatch:
+# jobs:
+#   install_packages:
+#     runs-on: windows-latest
+#     steps:
+#       - name: Show R lib path
+#         run: Rscript -e "print(.libPaths())"
+#         shell: pwsh
