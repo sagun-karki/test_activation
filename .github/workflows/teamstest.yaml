@@ -11,7 +11,7 @@ jobs:
         run: |
           now=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
           payload="{\"message\": \"Hey from GitHub Actions 🤖 at $now\"}"
-          
-          curl -X POST ${{ secrets.POWER_AUTOMATE_URL }} \
+
+          curl -X POST "${{ secrets.TEAMS_WEBHOOK_URL }}" \
                -H "Content-Type: application/json" \
                -d "$payload"
