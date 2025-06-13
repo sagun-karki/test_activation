@@ -1,20 +1,17 @@
-name: Teams Message Test
+name: Send Power Automate Trigger
 
 on:
   workflow_dispatch:
 
 jobs:
-  send-teams-message:
+  send:
     runs-on: ubuntu-latest
     steps:
-      - name: Get Current Time
-        id: time
-        run: echo "now=$(date -u +"%Y-%m-%d %H:%M:%S UTC")" >> $GITHUB_OUTPUT
-
-      - name: Send message to Teams
+      - name: Send request to Power Automate flow
         run: |
-          msg="🕒 Time: ${{ steps.time.outputs.now }}\n👋 Hey I am from GitHub Actions 😎"
-          payload="{\"text\": \"$msg\"}"
-          curl -H "Content-Type: application/json" \
-               -d "$payload" \
-               ${{ secrets.TEAMS_WEBHOOK_URL }}
+          now=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          payload="{\"message\": \"Hey from GitHub Actions 🤖 at $now\"}"
+          
+          curl -X POST ${{ secrets.POWER_AUTOMATE_URL }} \
+               -H "Content-Type: application/json" \
+               -d "$payload"
